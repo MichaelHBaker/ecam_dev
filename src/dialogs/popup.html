@@ -1,26 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Popup Dialog</title>
+    <meta charset="utf-8">
+    <title>Message Dialog</title>
+    <style>
+        /* Add your CSS styling here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .message-container {
+            margin: 20px;
+        }
+    </style>
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-    <script src="popup.js"></script> 
-    <!-- Your head content here -->
-  </head>
-<body>
-    <div id="elementIdDisplay">Button ID will be displayed here</div>
-    <button id="okButton">OK</button>
-    <script>
-        Office.onReady(() => {
-            Office.context.ui.addHandlerAsync(Office.EventType.DialogParentMessageReceived, function (arg) {
-                const messageFromParent = JSON.parse(arg.message);
-                document.getElementById("elementIdDisplay").innerText = "Button clicked: " + messageFromParent.elementId;
-            });
+    <!-- <script type="text/javascript" src="popup.js"></script> -->
+</head>
 
-            document.getElementById("okButton").addEventListener("click", function() {
-                Office.context.ui.messageParent(JSON.stringify({status: 'ok'}));
-            });
+<body>
+    <div class="message-container">
+        <p id="messageText">Hello...</p>
+    </div>
+    <script>
+        function receiveMessageFromParent(arg) {
+            console.log("from messagefromparent " + arg);
+            if (arg.message && arg.message.type === "initialMessage") {
+                if (arg.message) {
+                    document.getElementById("messageText").innerText = arg.message;
+                }
+            //}
+        }
+
+        Office.onReady(function() {
+            Office.context.ui.addHandlerAsync(Office.EventType.DialogParentMessageReceived, receiveMessageFromParent);
+            Office.context.ui.messageParent("Dialog created");
         });
+        
+        console.log("from popup.html script");
+
     </script>
 </body>
 </html>
-
