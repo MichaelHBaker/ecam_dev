@@ -23,11 +23,11 @@
     <script>
         function receiveMessageFromParent(arg) {
             console.log("from messagefromparent " + arg);
-            if (arg.message && arg.message.type === "initialMessage") {
+            // if (arg.message && arg.message.type === "initialMessage") {
                 if (arg.message) {
                     document.getElementById("messageText").innerText = arg.message;
                 }
-            //}
+            // }
         }
 
         Office.onReady(function() {
